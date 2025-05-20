@@ -14,20 +14,23 @@ class PeminjamController extends Controller
     public function index()
     {
         $peminjams = Peminjam::all();
-
+    
+        // Cek jika data kosong
         if ($peminjams->isEmpty()) {
             return response()->json([
-                'success' => true,
-                'message' => 'Resource data not found',
-            ], 200);
+                'success' => false,  // Mengubah 'success' menjadi false ketika data tidak ditemukan
+                'message' => 'No data found',  // Pesan yang lebih sesuai
+            ], 404);  // Status code 404 karena data tidak ditemukan
         }
-
+    
+        // Mengembalikan response jika data ditemukan
         return response()->json([
             'success' => true,
             'message' => 'Get All Resource',
             'data' => $peminjams
-        ], 200);
+        ], 200);  // Status code 200 untuk data yang ditemukan
     }
+    
 
     /**
      * Store a newly created peminjam in the database.

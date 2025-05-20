@@ -11,6 +11,7 @@ class Peminjam extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'peminjam';
+    protected $primaryKey = 'id_peminjam'; // Tentukan kolom primary key yang digunakan
 
     protected $fillable = [
         'nik_karyawan',
@@ -18,6 +19,6 @@ class Peminjam extends Model
         'kd_gudang',
     ];
 
-    // untuk menghubungan dengan tabel lain (misalnya `Gudang`),
-   
+    // Jika menggunakan soft deletes
+    protected $dates = ['deleted_at'];
 }
