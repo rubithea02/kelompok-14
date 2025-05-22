@@ -4,6 +4,7 @@ use App\Http\Controllers\PeminjamController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GudangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +35,8 @@ Route::post('users', [UserController::class, 'store']);// Tambah user baru
 Route::put('users/{id}', [UserController::class, 'update']);// Update data user
 Route::delete('users/{id}', [UserController::class, 'destroy']);// Hapus user
 
+Route::get('gudang', [GudangController::class, 'index']);
+Route::get('gudang/{id}', [GudangController::class, 'show']);
+Route::post('gudang', [GudangController::class, 'store']);
+Route::put('gudang/{id}', [GudangController::class, 'update']);
+Route::delete('gudang/{id}', [GudangController::class, 'destroy']);
