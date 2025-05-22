@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PeminjamController;
+use App\Http\Controllers\KategoriAsetController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,3 +25,10 @@ Route::get('peminjam/{id}', [PeminjamController::class, 'show']); // Menampilkan
 Route::post('peminjam', [PeminjamController::class, 'store']); // Menyimpan peminjam baru
 Route::put('peminjam/{id}', [PeminjamController::class, 'update']); // Mengupdate peminjam
 Route::delete('peminjam/{id}', [PeminjamController::class, 'destroy']); // Menghapus peminjam
+
+
+Route::get('kategori-aset', [KategoriAsetController::class, 'index']);
+Route::get('kategori-aset/{id}', [KategoriAsetController::class, 'show']);
+Route::post('kategori-aset', [KategoriAsetController::class, 'store']);
+Route::put('kategori-aset/{id}', [KategoriAsetController::class, 'update']);
+Route::delete('kategori-aset/{id}', [KategoriAsetController::class, 'destroy']);
