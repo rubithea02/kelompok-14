@@ -1,9 +1,10 @@
 <?php
 
 use App\Http\Controllers\PeminjamController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\GudangController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -25,11 +26,11 @@ Route::post('peminjam', [PeminjamController::class, 'store']); // Menyimpan pemi
 Route::put('peminjam/{id}', [PeminjamController::class, 'update']); // Mengupdate peminjam
 Route::delete('peminjam/{id}', [PeminjamController::class, 'destroy']); // Menghapus peminjam
 
-Route::get('gudang', [GudangController::class, 'index']);
-Route::get('gudang/{id}', [GudangController::class, 'show']);
-Route::post('gudang', [GudangController::class, 'store']);
-Route::put('gudang/{id}', [GudangController::class, 'update']);
-Route::delete('gudang/{id}', [GudangController::class, 'destroy']);
 
 
+Route::get('users', [UserController::class, 'index']);// Tampil semua user
+Route::get('users/{id}', [UserController::class, 'show']);// Tampil user berdasarkan ID
+Route::post('users', [UserController::class, 'store']);// Tambah user baru
+Route::put('users/{id}', [UserController::class, 'update']);// Update data user
+Route::delete('users/{id}', [UserController::class, 'destroy']);// Hapus user
 
