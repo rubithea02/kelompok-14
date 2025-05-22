@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PeminjamController;
 use App\Http\Controllers\KategoriAsetController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,3 +33,10 @@ Route::get('kategori-aset/{id}', [KategoriAsetController::class, 'show']);
 Route::post('kategori-aset', [KategoriAsetController::class, 'store']);
 Route::put('kategori-aset/{id}', [KategoriAsetController::class, 'update']);
 Route::delete('kategori-aset/{id}', [KategoriAsetController::class, 'destroy']);
+
+Route::get('users', [UserController::class, 'index']);// Tampil semua user
+Route::get('users/{id}', [UserController::class, 'show']);// Tampil user berdasarkan ID
+Route::post('users', [UserController::class, 'store']);// Tambah user baru
+Route::put('users/{id}', [UserController::class, 'update']);// Update data user
+Route::delete('users/{id}', [UserController::class, 'destroy']);// Hapus user
+
