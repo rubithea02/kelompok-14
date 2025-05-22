@@ -3,7 +3,7 @@
 use App\Http\Controllers\PeminjamController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\GudangController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,3 +24,12 @@ Route::get('peminjam/{id}', [PeminjamController::class, 'show']); // Menampilkan
 Route::post('peminjam', [PeminjamController::class, 'store']); // Menyimpan peminjam baru
 Route::put('peminjam/{id}', [PeminjamController::class, 'update']); // Mengupdate peminjam
 Route::delete('peminjam/{id}', [PeminjamController::class, 'destroy']); // Menghapus peminjam
+
+Route::get('gudang', [GudangController::class, 'index']);
+Route::get('gudang/{id}', [GudangController::class, 'show']);
+Route::post('gudang', [GudangController::class, 'store']);
+Route::put('gudang/{id}', [GudangController::class, 'update']);
+Route::delete('gudang/{id}', [GudangController::class, 'destroy']);
+
+
+
