@@ -5,7 +5,6 @@ use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,8 +27,10 @@ Route::put('peminjam/{id}', [PeminjamController::class, 'update']); // Mengupdat
 Route::delete('peminjam/{id}', [PeminjamController::class, 'destroy']); // Menghapus peminjam
 
 
+
 Route::get('users', [UserController::class, 'index']);// Tampil semua user
 Route::get('users/{id}', [UserController::class, 'show']);// Tampil user berdasarkan ID
 Route::post('users', [UserController::class, 'store']);// Tambah user baru
 Route::put('users/{id}', [UserController::class, 'update']);// Update data user
 Route::delete('users/{id}', [UserController::class, 'destroy']);// Hapus user
+
