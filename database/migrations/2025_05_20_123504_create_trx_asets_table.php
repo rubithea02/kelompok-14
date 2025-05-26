@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('kd_aktiva', 15);
             $table->string('lokasi', 50);
             $table->dateTime('tanggal_keluar')->nullable();
-            $table->dateTime('tanggal_kembail')->nullable();
+            $table->dateTime('tanggal_kembali')->nullable();
             $table->timestamps(0);  // created_at, updated_at
             $table->softDeletes();  // deleted_at
             $table->unsignedBigInteger('id_peminjam');
