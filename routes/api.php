@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GudangController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,3 +47,10 @@ Route::get('gudang/{id}', [GudangController::class, 'show']);
 Route::post('gudang', [GudangController::class, 'store']);
 Route::put('gudang/{id}', [GudangController::class, 'update']);
 Route::delete('gudang/{id}', [GudangController::class, 'destroy']);
+
+Route::post('login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('user', [AuthController::class, 'user']);
+    Route::post('logout', [AuthController::class, 'logout']);
+});
