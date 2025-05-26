@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Model
+class User extends Authenticatable
 {
-    use HasFactory, SoftDeletes;
+    use HasApiTokens, Notifiable, SoftDeletes;
 
-    protected $table = 'users';  // Nama tabel sesuai migrasi
-
-    protected $primaryKey = 'id_user'; // Primary key khusus sesuai migrasi
+    protected $table = 'users';
+    protected $primaryKey = 'id_user';
 
     protected $fillable = [
         'email_karyawan',
@@ -23,9 +23,8 @@ class User extends Model
         'id_gudang',
     ];
 
-    // Jika ingin, kamu bisa tambahkan relasi ke tabel lain di sini, misal:
-    // public function gudang()
-    // {
-    //     return $this->belongsTo(Gudang::class, 'id_gudang');
-    // }
+    public function getAuthPassword()
+    {
+        return $this->password_user;
+    }
 }
