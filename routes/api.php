@@ -6,7 +6,8 @@ use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GudangController;
-use App\Http\Controllers\TrxAsetController;
+use App\Http\Controllers\TrxAsetController; //pinjam
+use App\Http\Controllers\AssetController;
 
 
 /*
@@ -55,3 +56,5 @@ Route::prefix('trx-asets')->group(function () {
     Route::put('/{id}', [TrxAsetController::class, 'update']);   // PUT pinjam
     Route::delete('/{id}', [TrxAsetController::class, 'destroy']); // DELETE pinjam
 });
+
+Route::apiResource('assets', AssetController::class);

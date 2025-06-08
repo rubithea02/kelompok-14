@@ -1,6 +1,5 @@
 <?php
 
-// app/Http/Controllers/TrxAsetController.php
 namespace App\Http\Controllers;
 
 use App\Models\TrxAset;
@@ -19,14 +18,14 @@ class TrxAsetController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'kd_cabang' => 'required|string|max:10',
+            'kd_cabang' => ['required', 'string', 'size:4', 'regex:/^[A-Za-z0-9]{4}$/'],
             'name_asset' => 'required|string|max:30',
             'tipe_asset' => 'required|string|max:50',
             'serial_number' => 'required|string|max:25',
             'kd_aktiva' => 'required|string|max:15',
             'lokasi' => 'required|string|max:50',
             'tanggal_keluar' => 'nullable|date',
-            'tanggal_kembail' => 'nullable|date',
+            'tanggal_kembali' => 'nullable|date',
             'id_peminjam' => 'required|integer',
             'id_asets' => 'required|integer',
         ]);
@@ -42,18 +41,20 @@ class TrxAsetController extends Controller
     {
         $trx = TrxAset::where('id_trx', $id)->where('trx_status', 'pinjam')->firstOrFail();
 
-        $trx->update($request->only([
-            'kd_cabang',
-            'name_asset',
-            'tipe_asset',
-            'serial_number',
-            'kd_aktiva',
-            'lokasi',
-            'tanggal_keluar',
-            'tanggal_kembail',
-            'id_peminjam',
-            'id_asets',
-        ]));
+        $validated = $request->validate([
+            'kd_cabang' => ['required', 'string', 'size:4', 'regex:/^[A-Za-z0-9]{4}$/'],
+            'name_asset' => 'required|string|max:30',
+            'tipe_asset' => 'required|string|max:50',
+            'serial_number' => 'required|string|max:25',
+            'kd_aktiva' => 'required|string|max:15',
+            'lokasi' => 'required|string|max:50',
+            'tanggal_keluar' => 'nullable|date',
+            'tanggal_kembali' => 'nullable|date',
+            'id_peminjam' => 'required|integer',
+            'id_asets' => 'required|integer',
+        ]);
+
+        $trx->update($validated);
 
         return response()->json($trx);
     }
