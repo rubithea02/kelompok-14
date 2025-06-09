@@ -57,4 +57,10 @@ Route::prefix('trx-asets')->group(function () {
     Route::delete('/{id}', [TrxAsetController::class, 'destroy']); // DELETE pinjam
 });
 
-Route::apiResource('assets', AssetController::class);
+Route::prefix('assets')->group(function () {
+    Route::get('/', [AssetController::class, 'index']);
+    Route::post('/', [AssetController::class, 'store']);
+    Route::get('/{id}', [AssetController::class, 'show']);
+    Route::put('/{id}', [AssetController::class, 'update']);
+    Route::delete('/{id}', [AssetController::class, 'destroy']);
+});
