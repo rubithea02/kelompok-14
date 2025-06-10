@@ -6,9 +6,8 @@ use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GudangController;
-
+use App\Http\Controllers\AsetController;
 use App\Http\Controllers\TrxAsetController;
-
 use App\Http\Controllers\AuthController;
 
 
@@ -52,13 +51,25 @@ Route::post('gudang', [GudangController::class, 'store']);
 Route::put('gudang/{id}', [GudangController::class, 'update']);
 Route::delete('gudang/{id}', [GudangController::class, 'destroy']);
 
+Route::get('assets', [AsetController::class, 'index']);
+Route::post('assets', [AsetController::class, 'store']);
+Route::get('assets/{id}', [AsetController::class, 'show']);
+Route::put('assets/{id}', [AsetController::class, 'update']);
+Route::delete('assets/{id}', [AsetController::class, 'destroy']);
+
 
 Route::prefix('trx-asets')->group(function () {
     Route::get('/', [TrxAsetController::class, 'index']);       // GET semua pinjam
     Route::post('/', [TrxAsetController::class, 'store']);       // POST pinjam baru
     Route::put('/{id}', [TrxAsetController::class, 'update']);   // PUT pinjam
     Route::delete('/{id}', [TrxAsetController::class, 'destroy']); // DELETE pinjam
+
+    Route::get('/service', [TrxAsetController::class, 'indexService']);
+    Route::post('/service', [TrxAsetController::class, 'storeService']);
+    Route::put('/service/{id}', [TrxAsetController::class, 'updateService']);
+    Route::delete('/service/{id}', [TrxAsetController::class, 'destroyService']);
 });
+
 
 Route::post('login', [AuthController::class, 'login']);
 
