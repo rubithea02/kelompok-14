@@ -6,8 +6,11 @@ use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GudangController;
+
 use App\Http\Controllers\TrxAsetController; //pinjam
 use App\Http\Controllers\AssetController;
+
+use App\Http\Controllers\AuthController;
 
 
 /*
@@ -50,12 +53,14 @@ Route::post('gudang', [GudangController::class, 'store']);
 Route::put('gudang/{id}', [GudangController::class, 'update']);
 Route::delete('gudang/{id}', [GudangController::class, 'destroy']);
 
+
 Route::prefix('trx-asets')->group(function () {
     Route::get('/', [TrxAsetController::class, 'index']);       // GET semua pinjam
     Route::post('/', [TrxAsetController::class, 'store']);       // POST pinjam baru
     Route::put('/{id}', [TrxAsetController::class, 'update']);   // PUT pinjam
     Route::delete('/{id}', [TrxAsetController::class, 'destroy']); // DELETE pinjam
 });
+
 
 Route::prefix('assets')->group(function () {
     Route::get('/', [AssetController::class, 'index']);
@@ -64,3 +69,10 @@ Route::prefix('assets')->group(function () {
     Route::put('/{id}', [AssetController::class, 'update']);
     Route::delete('/{id}', [AssetController::class, 'destroy']);
 });
+Route::post('login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('user', [AuthController::class, 'user']);
+    Route::post('logout', [AuthController::class, 'logout']);
+});
+
