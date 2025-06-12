@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GudangController;
 
-use App\Http\Controllers\TrxAsetController;
+use App\Http\Controllers\TrxAsetController; //pinjam
+use App\Http\Controllers\AssetController;
 
 use App\Http\Controllers\AuthController;
 
@@ -60,6 +61,14 @@ Route::prefix('trx-asets')->group(function () {
     Route::delete('/{id}', [TrxAsetController::class, 'destroy']); // DELETE pinjam
 });
 
+
+Route::prefix('assets')->group(function () {
+    Route::get('/', [AssetController::class, 'index']);
+    Route::post('/', [AssetController::class, 'store']);
+    Route::get('/{id}', [AssetController::class, 'show']);
+    Route::put('/{id}', [AssetController::class, 'update']);
+    Route::delete('/{id}', [AssetController::class, 'destroy']);
+});
 Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
