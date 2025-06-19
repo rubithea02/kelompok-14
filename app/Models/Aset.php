@@ -10,9 +10,10 @@ class Aset extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'aset';
-    protected $primaryKey = 'id_asets';
+    protected $table = 'aset'; // Nama tabel
+    protected $primaryKey = 'id_asets'; // Primary key custom
     public $incrementing = true;
+    public $timestamps = true;
 
     protected $fillable = [
         'kd_gudang',
@@ -27,4 +28,19 @@ class Aset extends Model
         'id_kat_aset',
         'id_user',
     ];
+
+    // Optional: Format date
+    protected $dates = ['tanggal_perolehan', 'deleted_at'];
+
+    // Optional: Relasi ke user
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
+    }
+
+    // Optional: Relasi ke kategori aset
+    public function kategori()
+    {
+        return $this->belongsTo(KategoriAset::class, 'id_kat_aset');
+    }
 }
