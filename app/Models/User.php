@@ -27,4 +27,5 @@ class User extends Authenticatable
     {
         return $this->password_user;
     }
+    protected $dates = ['deleted_at'];
 }
