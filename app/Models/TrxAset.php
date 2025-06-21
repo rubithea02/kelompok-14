@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TrxAset extends Model 
+class TrxAset extends Model
 {
     use SoftDeletes;
 
     protected $primaryKey = 'id_trx';
 
-    protected $table = 'trx_asets'; //piinjam
+    protected $table = 'trx_asets'; //pinjam
 
     protected $fillable = [
         'kd_cabang',
