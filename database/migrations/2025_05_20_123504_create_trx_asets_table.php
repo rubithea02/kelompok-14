@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name_asset', 30);
             $table->string('tipe_asset', 50);
             $table->string('serial_number', 25);
-            $table->enum('trx_status', ['pinjam', 'service', 'BAP']);
+            $table->enum('trx_status', ['in','out','service', 'BAP']);
             $table->string('kd_aktiva', 15);
             $table->string('lokasi', 50);
             $table->dateTime('tanggal_keluar')->nullable();

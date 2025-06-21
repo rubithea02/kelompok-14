@@ -6,6 +6,9 @@ use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GudangController;
+use App\Http\Controllers\TrxAsetInController;
+use App\Http\Controllers\TrxAsetOutController;
+
 
 use App\Http\Controllers\TrxAsetController; //pinjam
 use App\Http\Controllers\AssetController;
@@ -54,12 +57,6 @@ Route::put('gudang/{id}', [GudangController::class, 'update']);
 Route::delete('gudang/{id}', [GudangController::class, 'destroy']);
 
 
-Route::prefix('trx-asets')->group(function () {
-    Route::get('/', [TrxAsetController::class, 'index']);       // GET semua pinjam
-    Route::post('/', [TrxAsetController::class, 'store']);       // POST pinjam baru
-    Route::put('/{id}', [TrxAsetController::class, 'update']);   // PUT pinjam
-    Route::delete('/{id}', [TrxAsetController::class, 'destroy']); // DELETE pinjam
-});
 
 
 Route::prefix('assets')->group(function () {
@@ -75,4 +72,20 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [AuthController::class, 'user']);
     Route::post('logout', [AuthController::class, 'logout']);
 });
+
+// SEMENTARA tanpa middleware auth
+Route::prefix('aset-out')->group(function () {
+    Route::get('/', [TrxAsetOutController::class, 'index']);
+    Route::post('/', [TrxAsetOutController::class, 'store']);
+});
+
+Route::prefix('aset-in')->group(function () {
+    Route::get('/', [TrxAsetInController::class, 'index']);
+    Route::post('/', [TrxAsetInController::class, 'store']);
+});
+
+// routes/api.php
+Route::get('/aset/{id}', [AssetController::class, 'show']);
+Route::post('/trx-aset-in', [TrxAsetInController::class, 'store']);
+
 

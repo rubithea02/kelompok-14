@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('tipe_aset', 50);
             $table->decimal('harga', 15, 2);
             $table->string('serial_number', 25);
-            $table->enum('inout_aset', ['in', 'out']);
+            $table->enum('inout_aset', ['in','out','service', 'BAP']);
             $table->string('cover_photo');
             $table->date('tanggal_perolehan');
             $table->timestamps();  // created_at, updated_at
