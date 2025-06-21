@@ -6,13 +6,13 @@ use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GudangController;
+
 use App\Http\Controllers\TrxAsetInController;
 use App\Http\Controllers\TrxAsetOutController;
 
 
 use App\Http\Controllers\TrxAsetController; //pinjam
 use App\Http\Controllers\AssetController;
-
 use App\Http\Controllers\AuthController;
 
 
@@ -37,6 +37,9 @@ Route::post('peminjam', [PeminjamController::class, 'store']); // Menyimpan pemi
 Route::put('peminjam/{id}', [PeminjamController::class, 'update']); // Mengupdate peminjam
 Route::delete('peminjam/{id}', [PeminjamController::class, 'destroy']); // Menghapus peminjam
 
+Route::get('users', [UserController::class, 'index']);// Tampil semua user
+
+Route::middleware(['auth:sanctum', 'checkrole:admin'])->group(function () {
 
 Route::get('kategori-aset', [KategoriAsetController::class, 'index']);
 Route::get('kategori-aset/{id}', [KategoriAsetController::class, 'show']);
@@ -44,7 +47,6 @@ Route::post('kategori-aset', [KategoriAsetController::class, 'store']);
 Route::put('kategori-aset/{id}', [KategoriAsetController::class, 'update']);
 Route::delete('kategori-aset/{id}', [KategoriAsetController::class, 'destroy']);
 
-Route::get('users', [UserController::class, 'index']);// Tampil semua user
 Route::get('users/{id}', [UserController::class, 'show']);// Tampil user berdasarkan ID
 Route::post('users', [UserController::class, 'store']);// Tambah user baru
 Route::put('users/{id}', [UserController::class, 'update']);// Update data user
@@ -55,7 +57,7 @@ Route::get('gudang/{id}', [GudangController::class, 'show']);
 Route::post('gudang', [GudangController::class, 'store']);
 Route::put('gudang/{id}', [GudangController::class, 'update']);
 Route::delete('gudang/{id}', [GudangController::class, 'destroy']);
-
+});
 
 
 
@@ -71,6 +73,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [AuthController::class, 'user']);
     Route::post('logout', [AuthController::class, 'logout']);
+
 });
 
 // SEMENTARA tanpa middleware auth
@@ -87,5 +90,6 @@ Route::prefix('aset-in')->group(function () {
 // routes/api.php
 Route::get('/aset/{id}', [AssetController::class, 'show']);
 Route::post('/trx-aset-in', [TrxAsetInController::class, 'store']);
+
 
 
