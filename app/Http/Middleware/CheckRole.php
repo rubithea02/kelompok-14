@@ -10,14 +10,17 @@ class CheckRole
 {
     public function handle(Request $request, Closure $next, ...$roles)
     {
-        if (!Auth::check()) {
+        $user = Auth::user();
+
+        if (!$user) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        $user = Auth::user();
+        // Bandingkan role dengan lowercase agar lebih aman
+        $userRole = strtolower($user->role);
+        $allowedRoles = array_map('strtolower', $roles);
 
-        // Mendukung banyak role, misal: admin,manager
-        if (!in_array($user->role, $roles)) {
+        if (!in_array($userRole, $allowedRoles)) {
             return response()->json(['message' => 'Forbidden. Access denied.'], 403);
         }
 

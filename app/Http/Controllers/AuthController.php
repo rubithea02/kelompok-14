@@ -26,27 +26,34 @@ class AuthController extends Controller
             ], 401);
         }
 
-        // Login secara manual
+        // Login user secara manual
         Auth::login($user);
 
-        // Hapus token lama jika ada
+        // Hapus semua token lama untuk keamanan
         $user->tokens()->delete();
 
         // Buat token baru
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('web_token')->plainTextToken;
 
         return response()->json([
             'success' => true,
             'message' => 'Login berhasil',
             'token' => $token,
             'token_type' => 'Bearer',
-            'user' => $user,
+            'user' => [
+                'id_user'        => $user->id_user,
+                'nama_karyawan'  => $user->nama_karyawan,
+                'email_karyawan' => $user->email_karyawan,
+                'role'           => $user->role,
+                'id_gudang'      => $user->id_gudang,
+            ],
         ], 200);
     }
 
     // Logout API
     public function logout(Request $request)
     {
+        // Hapus token saat ini (logout hanya sesi ini)
         if ($request->user()?->currentAccessToken()) {
             $request->user()->currentAccessToken()->delete();
         }
@@ -62,9 +69,17 @@ class AuthController extends Controller
     // Ambil user yang sedang login
     public function user(Request $request)
     {
+        $user = $request->user();
+
         return response()->json([
             'success' => true,
-            'user' => $request->user(),
+            'user' => [
+                'id_user'        => $user->id_user,
+                'nama_karyawan'  => $user->nama_karyawan,
+                'email_karyawan' => $user->email_karyawan,
+                'role'           => $user->role,
+                'id_gudang'      => $user->id_gudang,
+            ],
         ]);
     }
 }
