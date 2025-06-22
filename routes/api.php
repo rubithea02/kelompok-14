@@ -26,7 +26,7 @@ Route::post('aset-in', [TrxAsetInController::class, 'store']);
 Route::get('aset-out', [TrxAsetOutController::class, 'index']);
 Route::post('aset-out', [TrxAsetOutController::class, 'store']);
 
-Route::get('assets', [AssetController::class, 'index']);
+
 Route::get('assets/{id}', [AssetController::class, 'show']);
 Route::post('trx-aset-in', [TrxAsetInController::class, 'store']);
 
@@ -50,6 +50,8 @@ Route::middleware(['auth:sanctum', 'checkrole:manager,admin'])->group(function (
 
 
     Route::get('peminjam', [PeminjamController::class, 'index']);
+
+    Route::get('assets', [AssetController::class, 'index']);
 
 });
 
