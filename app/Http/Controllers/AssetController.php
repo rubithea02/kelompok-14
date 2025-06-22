@@ -23,7 +23,7 @@ class AssetController extends Controller
             'user_id' => $request->input('id_user')
         ]);
 
-        // Validasi data (tipe_aset tidak wajib)
+        // Validasi data
         $validator = Validator::make($request->all(), [
             'kd_gudang' => 'required|string|max:4',
             'name_asets' => 'required|string|max:30',
@@ -31,7 +31,7 @@ class AssetController extends Controller
             'tipe_aset' => 'nullable|string|max:50',
             'harga' => 'required|numeric',
             'serial_number' => 'required|string|max:25|unique:aset,serial_number',
-            'inout_aset' => 'required|in:in,out,service,BAP',
+            'inout_aset' => 'nullable|in:in,out,service,BAP', // diubah agar bisa default
             'cover_photo' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'tanggal_perolehan' => 'required|date',
             'id_kat_aset' => 'required|integer|exists:kat_aset,id_kat_aset',
@@ -55,7 +55,7 @@ class AssetController extends Controller
             'tipe_aset' => $request->tipe_aset ?? null,
             'harga' => $request->harga,
             'serial_number' => $request->serial_number,
-            'inout_aset' => $request->inout_aset,
+            'inout_aset' => $request->inout_aset ?? 'in', // default in
             'cover_photo' => $path,
             'tanggal_perolehan' => $request->tanggal_perolehan,
             'id_kat_aset' => $request->id_kat_aset,

@@ -13,70 +13,62 @@ use App\Http\Controllers\TrxAsetInController;
 use App\Http\Controllers\TrxAsetOutController;
 use App\Http\Controllers\TrxAsetController;
 use App\Http\Controllers\AssetController;
+use App\Http\Controllers\LaporanController;
 
-// Public Routes (tanpa auth)
+// 🔓 Semua route berikut ini bisa diakses tanpa autentikasi (untuk testing)
+
+// Auth
 Route::post('login', [AuthController::class, 'login']);
+Route::get('user', [AuthController::class, 'user']);
+Route::post('logout', [AuthController::class, 'logout']);
+
+// Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index']);
+
+// Gudang
+Route::get('gudang', [GudangController::class, 'index']);
+Route::get('gudang/{id}', [GudangController::class, 'show']);
+Route::post('gudang', [GudangController::class, 'store']);
+Route::put('gudang/{id}', [GudangController::class, 'update']);
+Route::delete('gudang/{id}', [GudangController::class, 'destroy']);
+
+// Kategori Aset
+Route::get('kategori-aset', [KategoriAsetController::class, 'index']);
+Route::get('kategori-aset/{id}', [KategoriAsetController::class, 'show']);
+Route::post('kategori-aset', [KategoriAsetController::class, 'store']);
+Route::put('kategori-aset/{id}', [KategoriAsetController::class, 'update']);
+Route::delete('kategori-aset/{id}', [KategoriAsetController::class, 'destroy']);
+
+// Aset
+Route::get('assets', [AssetController::class, 'index']);
 Route::get('assets/{id}', [AssetController::class, 'show']);
+Route::post('assets', [AssetController::class, 'store']);
+Route::put('assets/{id}', [AssetController::class, 'update']);
+Route::delete('assets/{id}', [AssetController::class, 'destroy']);
 
-// Routes untuk semua role (auth:sanctum)
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('user', [AuthController::class, 'user']);
-    Route::post('logout', [AuthController::class, 'logout']);
-});
+// Users (pegawai)
+Route::get('users', [UserController::class, 'index']);
+Route::get('users/{id}', [UserController::class, 'show']);
+Route::post('users', [UserController::class, 'store']);
+Route::put('users/{id}', [UserController::class, 'update']);
+Route::delete('users/{id}', [UserController::class, 'destroy']);
 
-// Routes khusus manager dan admin (GET-only)
-Route::middleware(['auth:sanctum', 'checkrole:manager,admin'])->group(function () {
-    // Users
-    Route::get('users', [UserController::class, 'index']);
+// Peminjam
+Route::get('peminjam', [PeminjamController::class, 'index']);
+Route::get('peminjam/{id}', [PeminjamController::class, 'show']);
+Route::post('peminjam', [PeminjamController::class, 'store']);
+Route::put('peminjam/{id}', [PeminjamController::class, 'update']);
+Route::delete('peminjam/{id}', [PeminjamController::class, 'destroy']);
 
-    // Gudang
-    Route::get('gudang', [GudangController::class, 'index']);
+// Transaksi Aset Masuk dan Keluar
+Route::get('aset-in', [TrxAsetInController::class, 'index']);
+Route::post('aset-in', [TrxAsetInController::class, 'store']);
+Route::get('aset-keluar', [TrxAsetOutController::class, 'index']);
+Route::post('/aset-keluar', [TrxAsetOutController::class, 'store']);
 
-    // Kategori Aset
-    Route::get('kategori-aset', [KategoriAsetController::class, 'index']);
+// Trx Aset (jika ada)
+Route::post('trx-aset-in', [TrxAsetInController::class, 'store']);
 
-    // Aset
-    Route::get('assets', [AssetController::class, 'index']);
-
-    // Peminjam
-    Route::get('peminjam', [PeminjamController::class, 'index']);
-});
-
-// Routes khusus admin (full akses)
-Route::middleware(['auth:sanctum', 'checkrole:admin'])->group(function () {
-    // Users
-    Route::get('users/{id}', [UserController::class, 'show']);
-    Route::post('users', [UserController::class, 'store']);
-    Route::put('users/{id}', [UserController::class, 'update']);
-    Route::delete('users/{id}', [UserController::class, 'destroy']);
-
-    // Gudang
-    Route::get('gudang/{id}', [GudangController::class, 'show']);
-    Route::post('gudang', [GudangController::class, 'store']);
-    Route::put('gudang/{id}', [GudangController::class, 'update']);
-    Route::delete('gudang/{id}', [GudangController::class, 'destroy']);
-
-    // Kategori Aset
-    Route::get('kategori-aset/{id}', [KategoriAsetController::class, 'show']);
-    Route::post('kategori-aset', [KategoriAsetController::class, 'store']);
-    Route::put('kategori-aset/{id}', [KategoriAsetController::class, 'update']);
-    Route::delete('kategori-aset/{id}', [KategoriAsetController::class, 'destroy']);
-
-    // Aset
-    Route::post('assets', [AssetController::class, 'store']);
-    Route::put('assets/{id}', [AssetController::class, 'update']);
-    Route::delete('assets/{id}', [AssetController::class, 'destroy']);
-
-    // Peminjam
-    Route::get('peminjam/{id}', [PeminjamController::class, 'show']);
-    Route::post('peminjam', [PeminjamController::class, 'store']);
-    Route::put('peminjam/{id}', [PeminjamController::class, 'update']);
-    Route::delete('peminjam/{id}', [PeminjamController::class, 'destroy']);
-
-    // Transaksi Aset (Aset Masuk & Keluar)
-    Route::get('aset-in', [TrxAsetInController::class, 'index']);
-    Route::post('aset-in', [TrxAsetInController::class, 'store']);
-    Route::get('aset-out', [TrxAsetOutController::class, 'index']);
-    Route::post('aset-out', [TrxAsetOutController::class, 'store']);
-});
+// Filter tab Transaksi Aset
+Route::get('aset-keluar', [TrxAsetOutController::class, 'filterByStatus']);
+Route::get('/laporan/grouped', [LaporanController::class, 'groupedByStatus']);
