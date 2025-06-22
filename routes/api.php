@@ -14,33 +14,21 @@ use App\Http\Controllers\TrxAsetOutController;
 use App\Http\Controllers\TrxAsetController;
 use App\Http\Controllers\AssetController;
 
-// 🔓 Public Routes (tanpa auth)
+// Public Routes (tanpa auth)
 Route::post('login', [AuthController::class, 'login']);
-
 Route::get('/dashboard', [DashboardController::class, 'index']);
-
-
-Route::get('aset-in', [TrxAsetInController::class, 'index']);
-Route::post('aset-in', [TrxAsetInController::class, 'store']);
-
-Route::get('aset-out', [TrxAsetOutController::class, 'index']);
-Route::post('aset-out', [TrxAsetOutController::class, 'store']);
-
-
 Route::get('assets/{id}', [AssetController::class, 'show']);
-Route::post('trx-aset-in', [TrxAsetInController::class, 'store']);
 
-// 🔐 Routes untuk semua role (auth:sanctum)
+// Routes untuk semua role (auth:sanctum)
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [AuthController::class, 'user']);
     Route::post('logout', [AuthController::class, 'logout']);
 });
 
-// 🔐 Routes khusus manager dan admin (GET-only)
+// Routes khusus manager dan admin (GET-only)
 Route::middleware(['auth:sanctum', 'checkrole:manager,admin'])->group(function () {
     // Users
     Route::get('users', [UserController::class, 'index']);
-    
 
     // Gudang
     Route::get('gudang', [GudangController::class, 'index']);
@@ -48,14 +36,14 @@ Route::middleware(['auth:sanctum', 'checkrole:manager,admin'])->group(function (
     // Kategori Aset
     Route::get('kategori-aset', [KategoriAsetController::class, 'index']);
 
-
-    Route::get('peminjam', [PeminjamController::class, 'index']);
-
+    // Aset
     Route::get('assets', [AssetController::class, 'index']);
 
+    // Peminjam
+    Route::get('peminjam', [PeminjamController::class, 'index']);
 });
 
-// 🔐 Routes khusus admin (full akses)
+// Routes khusus admin (full akses)
 Route::middleware(['auth:sanctum', 'checkrole:admin'])->group(function () {
     // Users
     Route::get('users/{id}', [UserController::class, 'show']);
@@ -80,8 +68,15 @@ Route::middleware(['auth:sanctum', 'checkrole:admin'])->group(function () {
     Route::put('assets/{id}', [AssetController::class, 'update']);
     Route::delete('assets/{id}', [AssetController::class, 'destroy']);
 
+    // Peminjam
     Route::get('peminjam/{id}', [PeminjamController::class, 'show']);
     Route::post('peminjam', [PeminjamController::class, 'store']);
     Route::put('peminjam/{id}', [PeminjamController::class, 'update']);
     Route::delete('peminjam/{id}', [PeminjamController::class, 'destroy']);
+
+    // Transaksi Aset (Aset Masuk & Keluar)
+    Route::get('aset-in', [TrxAsetInController::class, 'index']);
+    Route::post('aset-in', [TrxAsetInController::class, 'store']);
+    Route::get('aset-out', [TrxAsetOutController::class, 'index']);
+    Route::post('aset-out', [TrxAsetOutController::class, 'store']);
 });
