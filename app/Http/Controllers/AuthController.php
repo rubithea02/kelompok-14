@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    // Login API
     public function login(Request $request)
     {
         $request->validate([
@@ -24,7 +26,10 @@ class AuthController extends Controller
             ], 401);
         }
 
-        // Hapus token lama terlebih dahulu jika perlu (opsional)
+        // Login secara manual
+        Auth::login($user);
+
+        // Hapus token lama jika ada
         $user->tokens()->delete();
 
         // Buat token baru
@@ -33,35 +38,33 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Login berhasil',
-            'access_token' => $token,
+            'token' => $token,
             'token_type' => 'Bearer',
-            'data' => $user,
+            'user' => $user,
+        ], 200);
+    }
+
+    // Logout API
+    public function logout(Request $request)
+    {
+        if ($request->user()?->currentAccessToken()) {
+            $request->user()->currentAccessToken()->delete();
+        }
+
+        Auth::logout();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Logout berhasil',
         ]);
     }
 
-    public function logout(Request $request)
-    {
-        // Pastikan ada token yang valid
-        if ($request->user()?->currentAccessToken()) {
-            $request->user()->currentAccessToken()->delete();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Logout berhasil',
-            ]);
-        }
-
-        return response()->json([
-            'success' => false,
-            'message' => 'Tidak ada token yang aktif',
-        ], 401);
-    }
-
+    // Ambil user yang sedang login
     public function user(Request $request)
     {
         return response()->json([
             'success' => true,
-            'data' => $request->user(),
+            'user' => $request->user(),
         ]);
     }
 }

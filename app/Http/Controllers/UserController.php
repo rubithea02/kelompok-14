@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -13,16 +14,9 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        if ($users->isEmpty()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Data kosong',
-            ], 200);
-        }
-
         return response()->json([
             'success' => true,
-            'message' => 'Data user',
+            'message' => $users->isEmpty() ? 'Data kosong' : 'Data user',
             'data' => $users,
         ], 200);
     }
@@ -30,9 +24,18 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email_karyawan' => 'required|email|max:50|unique:users,email_karyawan',
+            'email_karyawan' => [
+                'required',
+                'email',
+                'max:50',
+                Rule::unique('users')->whereNull('deleted_at'),
+            ],
             'nama_karyawan' => 'required|string|max:50',
-            'nik_user' => 'required|integer|unique:users,nik_user',
+            'nik_user' => [
+                'required',
+                'integer',
+                Rule::unique('users')->whereNull('deleted_at'),
+            ],
             'role' => 'required|string|max:20',
             'password_user' => 'required|string|min:6',
             'id_gudang' => 'required|integer',
@@ -41,7 +44,8 @@ class UserController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => $validator->errors(),
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors(),
             ], 422);
         }
 
@@ -69,6 +73,7 @@ class UserController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'User tidak ditemukan',
+                'data' => null,
             ], 404);
         }
 
@@ -87,13 +92,23 @@ class UserController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'User tidak ditemukan',
+                'data' => null,
             ], 404);
         }
 
         $validator = Validator::make($request->all(), [
-            'email_karyawan' => 'required|email|max:50|unique:users,email_karyawan,' . $id . ',id_user',
+            'email_karyawan' => [
+                'required',
+                'email',
+                'max:50',
+                Rule::unique('users')->ignore($id, 'id_user')->whereNull('deleted_at'),
+            ],
             'nama_karyawan' => 'required|string|max:50',
-            'nik_user' => 'required|integer|unique:users,nik_user,' . $id . ',id_user',
+            'nik_user' => [
+                'required',
+                'integer',
+                Rule::unique('users')->ignore($id, 'id_user')->whereNull('deleted_at'),
+            ],
             'role' => 'required|string|max:20',
             'password_user' => 'nullable|string|min:6',
             'id_gudang' => 'required|integer',
@@ -102,7 +117,8 @@ class UserController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => $validator->errors(),
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors(),
             ], 422);
         }
 
@@ -133,6 +149,7 @@ class UserController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'User tidak ditemukan',
+                'data' => null,
             ], 404);
         }
 
@@ -141,6 +158,7 @@ class UserController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'User berhasil dihapus',
+            'data' => null,
         ], 200);
     }
 }
