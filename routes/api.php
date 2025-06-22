@@ -88,4 +88,9 @@ Route::prefix('aset-in')->group(function () {
 Route::get('/aset/{id}', [AssetController::class, 'show']);
 Route::post('/trx-aset-in', [TrxAsetInController::class, 'store']);
 
+Route::get('/aset-keluar', [TrxAsetOutController::class, 'index']);
+Route::post('/aset-keluar', [TrxAsetOutController::class, 'store']);
+Route::get('/gudangs', [GudangController::class, 'index']);
+
+
 

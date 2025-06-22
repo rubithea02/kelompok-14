@@ -17,50 +17,42 @@ class AssetController extends Controller
 
     public function store(Request $request)
     {
-        // Logging hanya data penting (jangan log semua input mentah)
         Log::info('Storing new Aset', [
             'name_asets' => $request->input('name_asets'),
             'serial_number' => $request->input('serial_number'),
             'user_id' => $request->input('id_user')
         ]);
 
-        // Validasi data
+        // Validasi data (tipe_aset tidak wajib)
         $validator = Validator::make($request->all(), [
             'kd_gudang' => 'required|string|max:4',
             'name_asets' => 'required|string|max:30',
             'spec' => 'required|string',
-            'tipe_aset' => 'required|string|max:50',
+            'tipe_aset' => 'nullable|string|max:50',
             'harga' => 'required|numeric',
-            'serial_number' => 'required|string|max:25|unique:asets,serial_number',
-            'inout_aset' => 'required|in:in,out',
+            'serial_number' => 'required|string|max:25|unique:aset,serial_number',
+            'inout_aset' => 'required|in:in,out,service,BAP',
             'cover_photo' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'tanggal_perolehan' => 'required|date',
-            'id_kat_aset' => 'required|integer|exists:kat_asets,id',
-            'id_user' => 'required|integer|exists:users,id',
+            'id_kat_aset' => 'required|integer|exists:kat_aset,id_kat_aset',
+            'id_user' => 'required|integer|exists:users,id_user',
         ]);
 
-        // Jika validasi gagal
         if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ], 422);
+            return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        // Simpan file cover foto
         if ($request->hasFile('cover_photo')) {
             $path = $request->file('cover_photo')->store('cover_photos', 'public');
         } else {
-            return response()->json([
-                'error' => 'File cover_photo tidak ditemukan.'
-            ], 400);
+            return response()->json(['error' => 'File cover_photo tidak ditemukan.'], 400);
         }
 
-        // Simpan ke database
         $aset = Aset::create([
             'kd_gudang' => $request->kd_gudang,
             'name_asets' => $request->name_asets,
             'spec' => $request->spec,
-            'tipe_aset' => $request->tipe_aset,
+            'tipe_aset' => $request->tipe_aset ?? null,
             'harga' => $request->harga,
             'serial_number' => $request->serial_number,
             'inout_aset' => $request->inout_aset,
@@ -87,7 +79,6 @@ class AssetController extends Controller
         return response()->json($aset);
     }
 
-
     public function update(Request $request, $id)
     {
         $aset = Aset::find($id);
@@ -99,14 +90,13 @@ class AssetController extends Controller
             'kd_gudang' => 'sometimes|required|string|max:4',
             'name_asets' => 'sometimes|required|string|max:30',
             'spec' => 'sometimes|required|string',
-            'tipe_aset' => 'sometimes|required|string|max:50',
             'harga' => 'sometimes|required|numeric',
             'serial_number' => 'sometimes|required|string|max:25',
-            'inout_aset' => 'sometimes|required|in:in,out',
+            'inout_aset' => 'sometimes|required|in:in,out,service,BAP',
             'cover_photo' => 'sometimes|image|mimes:jpg,jpeg,png|max:2048',
             'tanggal_perolehan' => 'sometimes|required|date',
-            'id_kat_aset' => 'sometimes|required|integer',
-            'id_user' => 'sometimes|required|integer',
+            'id_kat_aset' => 'sometimes|required|integer|exists:kat_aset,id_kat_aset',
+            'id_user' => 'sometimes|required|integer|exists:users,id_user',
         ]);
 
         if ($validator->fails()) {
