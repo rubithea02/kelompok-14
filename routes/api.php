@@ -15,7 +15,7 @@ use App\Http\Controllers\TrxAsetController;
 use App\Http\Controllers\AssetController;
 
 // Public Routes (tanpa auth)
-Route::post('login', [AuthController::class, 'login']);
+Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::get('/dashboard', [DashboardController::class, 'index']);
 Route::get('assets/{id}', [AssetController::class, 'show']);
 
@@ -41,6 +41,10 @@ Route::middleware(['auth:sanctum', 'checkrole:manager,admin'])->group(function (
 
     // Peminjam
     Route::get('peminjam', [PeminjamController::class, 'index']);
+
+    // Transaksi Aset - View Only (manager dapat melihat, tapi tidak bisa aksi)
+    Route::get('aset-in', [TrxAsetInController::class, 'index']);
+    Route::get('aset-out', [TrxAsetOutController::class, 'index']);
 });
 
 // Routes khusus admin (full akses)
@@ -74,9 +78,7 @@ Route::middleware(['auth:sanctum', 'checkrole:admin'])->group(function () {
     Route::put('peminjam/{id}', [PeminjamController::class, 'update']);
     Route::delete('peminjam/{id}', [PeminjamController::class, 'destroy']);
 
-    // Transaksi Aset (Aset Masuk & Keluar)
-    Route::get('aset-in', [TrxAsetInController::class, 'index']);
+    // Transaksi Aset (Aset Masuk & Keluar) - Mutasi khusus admin
     Route::post('aset-in', [TrxAsetInController::class, 'store']);
-    Route::get('aset-out', [TrxAsetOutController::class, 'index']);
     Route::post('aset-out', [TrxAsetOutController::class, 'store']);
 });
